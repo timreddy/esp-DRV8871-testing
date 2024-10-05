@@ -1,0 +1,3 @@
+[submodule "components/esp-DRV8871-cpp"]
+	path = components/esp-DRV8871-cpp
+	url = https://github.com/timreddy/esp-DRV8871-cpp.git
