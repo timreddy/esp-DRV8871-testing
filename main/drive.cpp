@@ -31,17 +31,21 @@ extern "C" void app_main() {
 
     //DRV8871 motor(MOTOR_PWM_PIN1, MOTOR_PWM_PIN2);
     DRV8871 motor(MOTOR_PWM_PIN1, MOTOR_PWM_PIN2);
-    motor.set_duty_cycle(0.5);
+    motor.setSpeed(0);
+
+    int8_t speed = 0;
+    int8_t increment = 1;
 
     while(1) {
-        motor.brake();
-        vTaskDelay(pdMS_TO_TICKS(500));
-        motor.forward();
-        vTaskDelay(pdMS_TO_TICKS(500));
-        motor.coast();
-        vTaskDelay(pdMS_TO_TICKS(500));
-        motor.reverse();
-        vTaskDelay(pdMS_TO_TICKS(500));
+        motor.setSpeed(speed);
+
+        if(speed == INT8_MAX || speed == INT8_MIN) {
+            increment *= -1;
+            ESP_LOGI(TAG, "Reached speed %d. Changing ramp direction.", speed);
+        }
+
+        speed += increment;
+        vTaskDelay(pdMS_TO_TICKS(40));
     }
 
     //should never get here. But, important to keep oled screen in scope
